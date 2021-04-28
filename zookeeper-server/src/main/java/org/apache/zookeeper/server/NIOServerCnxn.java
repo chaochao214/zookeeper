@@ -184,8 +184,10 @@ public class NIOServerCnxn extends ServerCnxn {
             incomingBuffer.flip();
             packetReceived(4 + incomingBuffer.remaining());
             if (!initialized) {
+                System.out.println("会话未连接，准备首次连接会话...");
                 readConnectRequest();
             } else {
+                System.out.println("会话已连接，非首次连接会话.....");
                 readRequest();
             }
             lenBuffer.clear();
