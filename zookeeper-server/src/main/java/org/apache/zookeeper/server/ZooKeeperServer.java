@@ -648,6 +648,7 @@ public class ZooKeeperServer implements SessionExpirer, ServerStats.Provider {
         }
         long id = cnxn.getSessionId();
         int to = cnxn.getSessionTimeout();
+        // 更新会话过期时间
         if (!sessionTracker.touchSession(id, to)) {
             throw new MissingSessionException("No session with sessionid 0x"
                                               + Long.toHexString(id)
