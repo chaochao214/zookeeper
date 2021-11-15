@@ -321,14 +321,14 @@ public class ZooKeeperServerMainTest extends ZKTestCase implements Watcher {
 
         zk.create("/foo", "foobar".getBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
         assertEquals(new String(zk.getData("/foo", null, null)), "foobar");
-        zk.close();
-
-        main.shutdown();
-        main.join();
-        main.deleteDirs();
-
-        assertTrue(ClientBase.waitForServerDown("127.0.0.1:" + CLIENT_PORT, ClientBase.CONNECTION_TIMEOUT),
-                "waiting for server down");
+//        zk.close();
+//
+//        main.shutdown();
+//        main.join();
+//        main.deleteDirs();
+//
+//        assertTrue(ClientBase.waitForServerDown("127.0.0.1:" + CLIENT_PORT, ClientBase.CONNECTION_TIMEOUT),
+//                "waiting for server down");
     }
 
     /**
@@ -358,6 +358,25 @@ public class ZooKeeperServerMainTest extends ZKTestCase implements Watcher {
         } catch (ConfigException iae) {
             // expected
         }
+    }
+
+    /**
+     * @Description
+     * @Date 2021/11/15 11:32
+     **/
+    @Test
+    public void test() throws Exception {
+        ClientBase.setupTestEnv();
+
+        final int CLIENT_PORT = PortAssignment.unique();
+        final String configs = "";
+        MainThread main = new MainThread(CLIENT_PORT, true, configs);
+        String[] args = new String[1];
+        args[0] = main.confFile.toString();
+
+        main.main.initializeAndRun(args);
+
+
     }
 
     /**

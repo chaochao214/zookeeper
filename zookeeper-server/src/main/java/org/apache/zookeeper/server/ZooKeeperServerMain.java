@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import javax.management.JMException;
+
 import org.apache.yetus.audience.InterfaceAudience;
 import org.apache.zookeeper.audit.ZKAuditProvider;
 import org.apache.zookeeper.jmx.ManagedUtil;
@@ -65,6 +66,8 @@ public class ZooKeeperServerMain {
     public static void main(String[] args) {
         ZooKeeperServerMain main = new ZooKeeperServerMain();
         try {
+            args = new String[1];
+            args[0] = "D:\\ideaProjects\\zookeeper\\zookeeper-server\\target\\surefire\\test3378128340630499921.junit.dir\\zoo.cfg";
             main.initializeAndRun(args);
         } catch (IllegalArgumentException e) {
             LOG.error("Invalid arguments, exiting abnormally", e);
@@ -115,6 +118,7 @@ public class ZooKeeperServerMain {
 
     /**
      * Run from a ServerConfig.
+     *
      * @param config ServerConfig to use.
      * @throws IOException
      * @throws AdminServerException
@@ -126,8 +130,8 @@ public class ZooKeeperServerMain {
             try {
                 // 收集指标并将当前值发布到外部设施的系统，和选举有关
                 metricsProvider = MetricsProviderBootstrap.startMetricsProvider(
-                    config.getMetricsProviderClassName(),
-                    config.getMetricsProviderConfiguration());
+                        config.getMetricsProviderClassName(),
+                        config.getMetricsProviderConfiguration());
             } catch (MetricsProviderLifeCycleException error) {
                 throw new IOException("Cannot boot MetricsProvider " + config.getMetricsProviderClassName(), error);
             }
@@ -174,11 +178,11 @@ public class ZooKeeperServerMain {
             }
 
             containerManager = new ContainerManager(
-                zkServer.getZKDatabase(),
-                zkServer.firstProcessor,
-                Integer.getInteger("znode.container.checkIntervalMs", (int) TimeUnit.MINUTES.toMillis(1)),
-                Integer.getInteger("znode.container.maxPerMinute", 10000),
-                Long.getLong("znode.container.maxNeverUsedIntervalMs", 0)
+                    zkServer.getZKDatabase(),
+                    zkServer.firstProcessor,
+                    Integer.getInteger("znode.container.checkIntervalMs", (int) TimeUnit.MINUTES.toMillis(1)),
+                    Integer.getInteger("znode.container.maxPerMinute", 10000),
+                    Long.getLong("znode.container.maxNeverUsedIntervalMs", 0)
             );
             containerManager.start();
             ZKAuditProvider.addZKStartStopAuditLog();
